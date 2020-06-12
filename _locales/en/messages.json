@@ -1,0 +1,17 @@
+{
+  "collected_by" : {
+    "message" : "Collected By"
+  },
+  "identified_by" : {
+    "message" : "Identified By"
+  },
+  "cited_by" : {
+    "message" : "Specimen Data Used In"
+  },
+  "people" : {
+    "message" : "People"
+  },
+  "person" : {
+    "message" : "Person"
+  }
+}

@@ -1,0 +1,15 @@
+p.bionomia-citation{
+  text-indent: -2em;
+  padding-left: 2em;
+  text-align:left;
+}
+a.gb-button--bionomia {
+    background: #d3633c;
+    color:#fff;
+}
+span.gb-button--brand--bionomia-label {
+  color: #fff;
+}
+span.bn-dataset-counter {
+  margin-right:3px;
+}

@@ -1,5 +1,5 @@
 bionomia/*global chrome, Object, alert */
-var BionomiaAttributor = (function($, window, document) {
+var Bionomia = (function($, window, document) {
 
   "use strict";
 
@@ -204,5 +204,5 @@ var BionomiaAttributor = (function($, window, document) {
 }(jQuery, window, document));
 
 $(function() {
-  BionomiaAttributor.init();
+  Bionomia.init();
 });

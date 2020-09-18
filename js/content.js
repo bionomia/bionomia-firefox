@@ -118,12 +118,12 @@ var Bionomia = (function($, window, document) {
     makeName: function(data) {
       var response = "";
       response += data.givenName + " " + data.familyName;
-      if (data["@id"].includes("Q")) {
+      if (data["sameAs"].includes("Q")) {
         response += " <img src=\"" + browser.runtime.getURL("images/wikidata_16x16.png") + "\" width=\"16\" height=\"16\" alt=\"iD icon\" border=\"0\">";
       } else {
         response += " <img src=\"" + browser.runtime.getURL("images/orcid_16x16.gif") + "\" width=\"16\" height=\"16\" alt=\"iD icon\" border=\"0\">";
       }
-      response += " <a href=\"" + data["@id"] + "\">" + data["@id"] + "</a><br>";
+      response += " <a href=\"" + data["sameAs"] + "\">" + data["sameAs"] + "</a><br>";
       return response;
     },
 

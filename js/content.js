@@ -1,4 +1,4 @@
-bionomia/*global chrome, Object, alert */
+/*global chrome, Object, alert */
 var Bionomia = (function($, window, document) {
 
   "use strict";

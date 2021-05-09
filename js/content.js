@@ -162,7 +162,7 @@ var Bionomia = (function($, window, document) {
 
     sendMessage: function() {
       var self = this,
-          message = {};
+          message = {},
           uuid_pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       if (self.vars.gbifIdentifier !== 0) {
         if ($.isNumeric(self.vars.gbifIdentifier)) {

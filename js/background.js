@@ -25,7 +25,7 @@ var BionomiaBackground = (function($, window, document) {
                 dataType: "json"
               }).done(function(data) {
                 sendResponse({});
-                browser.tabs.sendMessage(tab.id, { method : "_occurrence", params : { data: data } });
+                browser.tabs.sendMessage(tab.id, { method : "bn_occurrence", params : { data: data } });
                 return true;
               })
               .fail(function(data) {

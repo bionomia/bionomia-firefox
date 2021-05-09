@@ -35,7 +35,7 @@ var Bionomia = (function($, window, document) {
               self.vars.cited += self.makeCited(this);
             });
             checkExist = setInterval(function() {
-              if ($('header').length) {
+              if ($('header') && $('header').length) {
                 $('.bn-attribution').remove();
                 self.makeOccurrenceHTML();
                 clearInterval(checkExist);

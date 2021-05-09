@@ -34,39 +34,21 @@ var Bionomia = (function($, window, document) {
             $.each(request.params.data.associatedReferences, function() {
               self.vars.cited += self.makeCited(this);
             });
-            if ($('header').length === 0) {
-              checkExist = setInterval(function() {
-                if ($('header').length) {
-                  $('.bn-attribution').remove();
-                  self.makeOccurrenceHTML();
-                  clearInterval(checkExist);
-                }
-              }, 125);
-            } else {
-              $('.bn-attribution').remove();
-              self.makeOccurrenceHTML();
-            }
-          break;
-          case 'bn_dataset':
-          if (request.params.data["message"] !== undefined && request.params.data.message === "error") {
-            if ($('.bn-dataset').length === 0) {
-              checkExist = setInterval(function() {
-                if ($('.bn-dataset').length) {
-                  $('.bn-dataset').remove();
-                  clearInterval(checkExist);
-                }
-              }, 125);
-            } else {
-              $('.bn-dataset').remove();
-            }
-          } else {
-            self.vars.people = request.params.data.people;
             checkExist = setInterval(function() {
-              if ($('.bn-dataset').length) {
-                self.adjustDatasetCounter();
+              if ($('header').length) {
+                $('.bn-attribution').remove();
+                self.makeOccurrenceHTML();
                 clearInterval(checkExist);
               }
             }, 125);
+          break;
+          case 'bn_dataset':
+          if (request.params.data["message"] !== undefined && request.params.data.message === "error") {
+            $('.bn-dataset').remove();
+          } else {
+            self.vars.people = request.params.data.people;
+            self.createDatasetButton();
+            self.adjustDatasetCounter();
           }
           break;
         }
@@ -81,12 +63,19 @@ var Bionomia = (function($, window, document) {
       this.vars.identified = "";
       this.vars.cited = "";
       this.vars.people = "";
+      $('.bn-dataset').remove();
+      $('.bn-attribution').remove();
     },
 
     getGBIFidentifier: function() {
       var path = window.location.pathname,
           identifier = /(?:dataset|occurrence)\/(.+?)(?:\/|$)/;
-      return path.match(identifier)[1];
+
+      try {
+        return path.match(identifier)[1];
+      } catch(err) {
+        return;
+      }
     },
 
     setGBIFidentifier: function(id) {
@@ -96,11 +85,16 @@ var Bionomia = (function($, window, document) {
     createDatasetButton: function() {
       var self = this, checkExist = "";
 
-      if ($('.bn-dataset').length === 0) {
+      if ($('.bn-dataset') === null || $('.bn-dataset').length === 0) {
         if (this.vars.gbifIdentifier !== 0 && !$.isNumeric(this.vars.gbifIdentifier)) {
           checkExist = setInterval(function() {
-            if ($('#tabsScrollable').length) {
-              self.makeDatasetHTML();
+            if ($('#tabsScrollable') && $('#tabsScrollable').length) {
+              if ($('.bn-dataset').length === 0) {
+                self.makeDatasetHTML();
+              }
+              if (self.vars.people || self.vars.people === 0) {
+                self.adjustDatasetCounter();
+              }
               clearInterval(checkExist);
             }
           }, 125);
@@ -109,10 +103,14 @@ var Bionomia = (function($, window, document) {
     },
 
     adjustDatasetCounter: function() {
-      $('.bn-dataset-counter').html(this.vars.people.toString());
+      $('.bn-dataset-counter').html(this.numberWithCommas(this.vars.people));
       if (parseInt(this.vars.people,10) === 1) {
         $('.gb-button--brand--bionomia-label').text(browser.i18n.getMessage("person"));
       }
+    },
+
+    numberWithCommas: function(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
 
     makeName: function(data) {
@@ -163,29 +161,17 @@ var Bionomia = (function($, window, document) {
     },
 
     sendMessage: function() {
-      var self = this, checkExist = "", message = {};
-      if ($.isNumeric(self.vars.gbifIdentifier)) {
-        message = { gbifID : self.vars.gbifIdentifier };
-        browser.runtime.sendMessage({ method : "bn_gbifID", params : message });
-      } else {
-        message = { gbifDatasetKey : self.vars.gbifIdentifier };
-        browser.runtime.sendMessage({ method : "bn_gbifDatasetKey", params : message });
-      }
-    },
-
-    responseTimer: function() {
-      var self = this, checkExist = "", count = 0;
-      if (!$.isNumeric(self.vars.gbifIdentifier)){
-        checkExist = setInterval(function() {
-          if (++count === self.vars.timeout && $('.bn-dataset').find('img').length) {
-            self.sendMessage();
-            clearInterval(checkExist);
-          } else {
-            if (count >= self.vars.timeout*1.5) {
-              clearInterval(checkExist);
-            }
-          }
-        }, 125);
+      var self = this,
+          message = {};
+          uuid_pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (self.vars.gbifIdentifier !== 0) {
+        if ($.isNumeric(self.vars.gbifIdentifier)) {
+          message = { gbifID : self.vars.gbifIdentifier };
+          browser.runtime.sendMessage({ method : "bn_gbifID", params : message });
+        } else if (self.vars.gbifIdentifier.match(uuid_pattern)) {
+          message = { gbifDatasetKey : self.vars.gbifIdentifier };
+          browser.runtime.sendMessage({ method : "bn_gbifDatasetKey", params : message });
+        }
       }
     }
 
@@ -197,7 +183,6 @@ var Bionomia = (function($, window, document) {
       _private.setGBIFidentifier(_private.getGBIFidentifier());
       _private.createDatasetButton();
       _private.sendMessage();
-      _private.responseTimer();
     }
   };
 

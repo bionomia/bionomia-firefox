@@ -1,6 +1,6 @@
 {
   "name"            : "Bionomia",
-  "version"         : "1.0.3",
+  "version"         : "1.0.4",
   "description"     : "Adjust GBIF occurrence and dataset pages to include material from Bionomia.",
   "minimum_chrome_version" : "18",
   "manifest_version" : 2,

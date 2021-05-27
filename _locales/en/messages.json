@@ -8,6 +8,9 @@
   "cited_by" : {
     "message" : "Specimen Data Used In"
   },
+  "attributed_by" : {
+    "message" : "Attributed By"
+  },
   "people" : {
     "message" : "People"
   },

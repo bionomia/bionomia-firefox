@@ -26,10 +26,20 @@ var Bionomia = (function($, window, document) {
           break;
           case 'bn_occurrence':
             $.each(request.params.data.recorded, function() {
+              self.vars.recorded += "<p>";
               self.vars.recorded += self.makeName(this);
+              if (this.creator && !$.isEmptyObject(this.creator)) {
+                self.vars.recorded += self.makeAttributor(this.creator);
+              }
+              self.vars.recorded += "</p>";
             });
             $.each(request.params.data.identified, function() {
+              self.vars.identified += "<p>";
               self.vars.identified += self.makeName(this);
+              if (this.creator && !$.isEmptyObject(this.creator)) {
+                self.vars.identified += self.makeAttributor(this.creator);
+              }
+              self.vars.identified += "</p>";
             });
             $.each(request.params.data.associatedReferences, function() {
               self.vars.cited += self.makeCited(this);
@@ -115,13 +125,27 @@ var Bionomia = (function($, window, document) {
 
     makeName: function(data) {
       var response = "";
-      response += data.givenName + " " + data.familyName;
+      response += data.name;
       if (data["sameAs"].includes("Q")) {
         response += " <img src=\"" + browser.runtime.getURL("images/wikidata_16x16.png") + "\" width=\"16\" height=\"16\" alt=\"iD icon\" border=\"0\">";
       } else {
         response += " <img src=\"" + browser.runtime.getURL("images/orcid_16x16.gif") + "\" width=\"16\" height=\"16\" alt=\"iD icon\" border=\"0\">";
       }
       response += " <a href=\"" + data["sameAs"] + "\">" + data["sameAs"] + "</a><br>";
+      return response;
+    },
+
+    makeAttributor: function(data) {
+      var response = "";
+      response += "<span style=\"font-size:x-small\">" + browser.i18n.getMessage("attributed_by") + ":";
+      response += data.name;
+      if (data["sameAs"].includes("Q")) {
+        response += " <img src=\"" + chrome.extension.getURL("images/wikidata_16x16.png") + "\" width=\"12\" height=\"12\" alt=\"iD icon\" border=\"0\">";
+      } else {
+        response += " <img src=\"" + chrome.extension.getURL("images/orcid_16x16.gif") + "\" width=\"12\" height=\"12\" alt=\"iD icon\" border=\"0\">";
+      }
+      response += " <a href=\"" + data["sameAs"] + "\">" + data["sameAs"] + "</a>";
+      response += "</span>";
       return response;
     },
 
@@ -134,11 +158,11 @@ var Bionomia = (function($, window, document) {
       var title = "";
       if (this.vars.recorded) {
         title = browser.i18n.getMessage("collected_by");
-        $("header").append("<div class=\"bn-attribution\"><h4>" + title + "</h4><div>" + this.vars.recorded + "</div></div>");
+        $("header").append("<div class=\"bn-attribution\"><h4>" + title + "</h4>" + this.vars.recorded + "</div>");
       }
       if (this.vars.identified) {
         title = browser.i18n.getMessage("identified_by");
-        $("header").append("<div class=\"bn-attribution\"><h4>" + title + "</h4><div>" + this.vars.identified + "</div></div>");
+        $("header").append("<div class=\"bn-attribution\"><h4>" + title + "</h4>" + this.vars.identified + "</div>");
       }
       if (this.vars.cited) {
         title = browser.i18n.getMessage("cited_by");

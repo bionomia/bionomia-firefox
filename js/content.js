@@ -28,16 +28,16 @@ var Bionomia = (function($, window, document) {
             $.each(request.params.data.recorded, function() {
               self.vars.recorded += "<p>";
               self.vars.recorded += self.makeName(this);
-              if (this.creator && !$.isEmptyObject(this.creator)) {
-                self.vars.recorded += self.makeAttributor(this.creator);
+              if (!$.isEmptyObject(this["@reverse"]["annotation"][0]["oa:creator"])) {
+                self.vars.recorded += self.makeAttributor(tthis["@reverse"]["annotation"][0]["oa:creator"]);
               }
               self.vars.recorded += "</p>";
             });
             $.each(request.params.data.identified, function() {
               self.vars.identified += "<p>";
               self.vars.identified += self.makeName(this);
-              if (this.creator && !$.isEmptyObject(this.creator)) {
-                self.vars.identified += self.makeAttributor(this.creator);
+              if (!$.isEmptyObject(this["@reverse"]["annotation"][0]["oa:creator"])) {
+                self.vars.identified += self.makeAttributor(this["@reverse"]["annotation"][0]["oa:creator"]);
               }
               self.vars.identified += "</p>";
             });

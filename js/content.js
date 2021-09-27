@@ -29,7 +29,7 @@ var Bionomia = (function($, window, document) {
               self.vars.recorded += "<p>";
               self.vars.recorded += self.makeName(this);
               if (!$.isEmptyObject(this["@reverse"]["annotation"][0]["oa:creator"])) {
-                self.vars.recorded += self.makeAttributor(tthis["@reverse"]["annotation"][0]["oa:creator"]);
+                self.vars.recorded += self.makeAttributor(this["@reverse"]["annotation"][0]["oa:creator"], this["sameAs"]);
               }
               self.vars.recorded += "</p>";
             });
@@ -37,7 +37,7 @@ var Bionomia = (function($, window, document) {
               self.vars.identified += "<p>";
               self.vars.identified += self.makeName(this);
               if (!$.isEmptyObject(this["@reverse"]["annotation"][0]["oa:creator"])) {
-                self.vars.identified += self.makeAttributor(this["@reverse"]["annotation"][0]["oa:creator"]);
+                self.vars.identified += self.makeAttributor(this["@reverse"]["annotation"][0]["oa:creator"], this["sameAs"]);
               }
               self.vars.identified += "</p>";
             });
@@ -135,14 +135,18 @@ var Bionomia = (function($, window, document) {
       return response;
     },
 
-    makeAttributor: function(data) {
+    makeAttributor: function(data, owner) {
       var response = "";
-      response += "<span style=\"font-size:x-small\">" + browser.i18n.getMessage("attributed_by") + ":";
+      if (data["sameAs"] === owner) {
+        response += "<span style=\"font-size:x-small\">" + browser.i18n.getMessage("claimed_by") + ":";
+      } else {
+        response += "<span style=\"font-size:x-small\">" + browser.i18n.getMessage("attributed_by") + ":";
+      }
       response += data.name;
       if (data["sameAs"].includes("Q")) {
-        response += " <img src=\"" + chrome.extension.getURL("images/wikidata_16x16.png") + "\" width=\"12\" height=\"12\" alt=\"iD icon\" border=\"0\">";
+        response += " <img src=\"" + browser.runtime.getURL("images/wikidata_16x16.png") + "\" width=\"12\" height=\"12\" alt=\"iD icon\" border=\"0\">";
       } else {
-        response += " <img src=\"" + chrome.extension.getURL("images/orcid_16x16.gif") + "\" width=\"12\" height=\"12\" alt=\"iD icon\" border=\"0\">";
+        response += " <img src=\"" + browser.runtime.getURL("images/orcid_16x16.gif") + "\" width=\"12\" height=\"12\" alt=\"iD icon\" border=\"0\">";
       }
       response += " <a href=\"" + data["sameAs"] + "\">" + data["sameAs"] + "</a>";
       response += "</span>";

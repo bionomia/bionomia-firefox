@@ -9,7 +9,10 @@
     "message" : "Données pour spécimen utilisé dans"
   },
   "attributed_by" : {
-    "message" : "Attributed By"
+    "message" : "Attribué par"
+  },
+  "claimed_by" : {
+    "message" : "Réclamé par"
   },
   "people" : {
     "message" : "Personnes"

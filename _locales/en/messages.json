@@ -11,6 +11,9 @@
   "attributed_by" : {
     "message" : "Attributed By"
   },
+  "claimed_by" : {
+    "message" : "Claimed By"
+  },
   "people" : {
     "message" : "People"
   },

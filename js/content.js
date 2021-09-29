@@ -28,17 +28,11 @@ var Bionomia = (function($, window, document) {
             $.each(request.params.data.recorded, function() {
               self.vars.recorded += "<p>";
               self.vars.recorded += self.makeName(this);
-              if (!$.isEmptyObject(this["@reverse"]["annotation"][0]["oa:creator"])) {
-                self.vars.recorded += self.makeAttributor(this["@reverse"]["annotation"][0]["oa:creator"], this["sameAs"]);
-              }
               self.vars.recorded += "</p>";
             });
             $.each(request.params.data.identified, function() {
               self.vars.identified += "<p>";
               self.vars.identified += self.makeName(this);
-              if (!$.isEmptyObject(this["@reverse"]["annotation"][0]["oa:creator"])) {
-                self.vars.identified += self.makeAttributor(this["@reverse"]["annotation"][0]["oa:creator"], this["sameAs"]);
-              }
               self.vars.identified += "</p>";
             });
             $.each(request.params.data.associatedReferences, function() {
@@ -135,6 +129,8 @@ var Bionomia = (function($, window, document) {
       return response;
     },
 
+/*
+REMOVED for now until semantics are better handled
     makeAttributor: function(data, owner) {
       var response = "";
       if (data["sameAs"] === owner) {
@@ -152,6 +148,7 @@ var Bionomia = (function($, window, document) {
       response += "</span>";
       return response;
     },
+*/
 
     makeCited: function(data) {
       var citation = data["description"] ? data["description"] : "";

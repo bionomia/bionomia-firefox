@@ -21,7 +21,7 @@ var BionomiaBackground = (function($, window, document) {
               tab = tab[0];
               $.ajax({
                 type: "GET",
-                url: "https://bionomia.net/occurrence/" + request.params.gbifID + ".jsonld",
+                url: "https://api.bionomia.net/occurrence/" + request.params.gbifID + ".jsonld",
                 dataType: "json"
               }).done(function(data) {
                 sendResponse({});
@@ -41,7 +41,7 @@ var BionomiaBackground = (function($, window, document) {
             tab = tab[0];
             $.ajax({
               type: "GET",
-              url: "https://bionomia.net/dataset/" + request.params.gbifDatasetKey + ".json",
+              url: "https://api.bionomia.net/dataset/" + request.params.gbifDatasetKey + ".json",
               dataType: "json"
             }).done(function(data) {
               sendResponse({});

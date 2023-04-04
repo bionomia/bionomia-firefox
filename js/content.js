@@ -50,7 +50,7 @@ var Bionomia = (function($, window, document) {
           if (request.params.data["message"] !== undefined && request.params.data.message === "error") {
             $('.bn-dataset').remove();
           } else {
-            self.vars.people = request.params.data.people;
+            self.vars.people = request.params.data.users_count;
             self.createDatasetButton();
             self.adjustDatasetCounter();
           }

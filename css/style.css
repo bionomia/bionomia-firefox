@@ -1,15 +1,18 @@
-p.bionomia-citation{
+.bn-attribution {
+  margin-top:0.5em;
+}
+.bn-citation {
   text-indent: -2em;
   padding-left: 2em;
   text-align:left;
 }
-a.gb-button--bionomia {
-    background: #d3633c;
-    color:#fff;
+.bn-badge {
+  margin-top:0.5em;
 }
-span.gb-button--brand--bionomia-label {
-  color: #fff;
+.bn-badge a, .bn-badge a:hover, .bn-badge a:active {
+  text-decoration:none;
 }
-span.bn-dataset-counter {
-  margin-right:3px;
+.bn-logo {
+  margin-left:0.5em;
+  margin-right:0.5em;
 }

@@ -1,27 +1,31 @@
 {
   "name"            : "Bionomia",
-  "version"         : "1.2.0",
+  "version"         : "2.4.0",
   "description"     : "Adjust GBIF occurrence and dataset pages to include material from Bionomia.",
-  "minimum_chrome_version" : "18",
-  "manifest_version" : 2,
+  "minimum_chrome_version" : "89",
+  "manifest_version" : 3,
   "icons" : {
     "16"  : "images/icon-16.png",
     "48"  : "images/icon-48.png",
     "128" : "images/icon-128.png"
   },
   "default_locale" : "en",
-  "browser_action" : {
+  "action" : {
     "default_title" : "Bionomia",
     "default_icon"  : "images/icon-16.png"
   },
   "permissions": [
-    "webNavigation",
+    "webNavigation"
+  ],
+  "host_permissions": [
     "*://*.gbif.org/occurrence/*",
     "*://*.gbif.org/*/occurrence/*",
     "*://*.gbif.org/dataset/*",
     "*://*.gbif.org/*/dataset/*"
   ],
-  "content_security_policy" : "script-src 'self'; object-src 'self'",
+  "content_security_policy" : {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -31,23 +35,18 @@
         "*://*.gbif.org/*/dataset/*"
       ],
       "run_at": "document_idle",
-      "js": ["js/jquery-3.5.0.min.js", "js/content.js"],
+      "js": ["js/jquery-3.5.0.min.js", "js/svg-inject.min.js", "js/content.js"],
       "css": ["css/style.css"]
     }
   ],
   "background"      : {
-    "page" : "background.html"
+    "service_worker": "js/background.js",
+    "scripts": ["js/background.js"]
   },
   "web_accessible_resources" : [
-    "images/icon-128.png",
-    "images/icon-48.png",
-    "images/icon-16.png",
-    "images/orcid_24x24.png",
-    "images/orcid_16x16.gif",
-    "images/wikidata_16x16.png",
-    "images/ajax-loader.gif",
-    "js/jquery-3.3.1.min.js",
-    "js/content.js",
-    "css/style.css"
+    {
+      "resources": ["images/*", "js/*", "css/*"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }
